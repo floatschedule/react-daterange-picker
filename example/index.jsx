@@ -271,11 +271,14 @@ const Index = createClass({
             <h2>Examples</h2>
 
             <div className="example">
-              <h4>Range with no date states</h4>
+              <h4>[Lucas Float] - Disabling current day with custom function </h4>
               <DatePickerRange
-                numberOfCalendars={2}
+                numberOfCalendars={1}
+                disableDayFn={(dateMoment)=>{
+                  return dateMoment.startOf('day').isSame(today.startOf('day'));
+                }}
                 selectionType="range"
-                minimumDate={new Date()} />
+                />
             </div>
 
             <div className="example">

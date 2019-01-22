@@ -59,6 +59,7 @@ const DateRangePicker = createClass({
     showLegend: PropTypes.bool,
     stateDefinitions: PropTypes.object,
     value: CustomPropTypes.momentOrMomentRange,
+    disableDayFn: PropTypes.func,
   },
 
   getDefaultProps() {
@@ -202,7 +203,12 @@ const DateRangePicker = createClass({
   },
 
   isDateDisabled(date) {
-    return !this.state.enabledRange.contains(date);
+    let outsideMinMax = !this.state.enabledRange.contains(date);
+    if(this.props.disableDayFn){
+      let customDisabledDay = this.props.disableDayFn(date);
+      return customDisabledDay || outsideMinMax;
+    }
+    return outsideMinMax;
   },
 
   isDateSelectable(date) {
@@ -520,6 +526,7 @@ const DateRangePicker = createClass({
       onUnHighlightDate: this.onUnHighlightDate,
       dateRangesForDate: this.dateRangesForDate,
       dateComponent: CalendarDate,
+      isDateDisabled: this.isDateDisabled,
       locale: this.props.locale,
     };
 
